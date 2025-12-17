@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="PFM.Application/PFM.Application.csproj" />
+  <Project Path="PFM.Core/PFM.Core.csproj" />
+  <Project Path="PFM.Infrastructure/PFM.Infrastructure.csproj" />
+  <Project Path="PFM.Tests/PFM.Tests.csproj" />
+  <Project Path="PFM.UI/PFM.UI.csproj" />
+</Solution>
