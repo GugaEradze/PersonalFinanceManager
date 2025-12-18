@@ -38,6 +38,7 @@ namespace PFM.UI
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddTransient<MainForm>();
+            services.AddTransient<AddEditTransactionForm>();
         }
     }
 }

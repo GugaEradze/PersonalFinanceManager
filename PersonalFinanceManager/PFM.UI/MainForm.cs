@@ -190,111 +190,15 @@ namespace PFM.UI
             }
         }
 
-        private async void btnAddTransaction_Click(object sender, EventArgs e)
+        private void btnAddTransaction_Click(object sender, EventArgs e)
         {
-            try
+            var addForm = new AddEditTransactionForm(
+                _transactionRepository,
+                _categoryRepository);
+
+            if (addForm.ShowDialog() == DialogResult.OK)
             {
-                var existingCategories = await _categoryRepository.GetAllAsync();
-
-                Category foodCategory, salaryCategory, transportCategory;
-
-                if (!existingCategories.Any())
-                {
-                    foodCategory = await _categoryRepository.AddAsync(new Category
-                    {
-                        Name = "Food",
-                        Type = Core.Enums.TransactionType.Expense,
-                        Color = "#FF5733",
-                        CreatedAt = DateTime.Now
-                    });
-
-                    salaryCategory = await _categoryRepository.AddAsync(new Category
-                    {
-                        Name = "Salary",
-                        Type = Core.Enums.TransactionType.Income,
-                        Color = "#28A745",
-                        CreatedAt = DateTime.Now
-                    });
-
-                    transportCategory = await _categoryRepository.AddAsync(new Category
-                    {
-                        Name = "Transport",
-                        Type = Core.Enums.TransactionType.Expense,
-                        Color = "#FFC107",
-                        CreatedAt = DateTime.Now
-                    });
-                }
-                else
-                {
-                    foodCategory = existingCategories.FirstOrDefault(c => c.Name == "Food");
-                    salaryCategory = existingCategories.FirstOrDefault(c => c.Name == "Salary");
-                    transportCategory = existingCategories.FirstOrDefault(c => c.Name == "Transport");
-                }
-
-                await _transactionRepository.AddAsync(new Transaction
-                {
-                    Amount = 50.50m,
-                    Description = "Grocery shopping",
-                    Date = DateTime.Now.AddDays(-5),
-                    Type = Core.Enums.TransactionType.Expense,
-                    CategoryId = foodCategory.Id,
-                    Currency = "GEL",
-                    CreatedAt = DateTime.Now
-                });
-
-                await _transactionRepository.AddAsync(new Transaction
-                {
-                    Amount = 2000m,
-                    Description = "Monthly salary",
-                    Date = DateTime.Now.AddDays(-3),
-                    Type = Core.Enums.TransactionType.Income,
-                    CategoryId = salaryCategory.Id,
-                    Currency = "GEL",
-                    CreatedAt = DateTime.Now
-                });
-
-                await _transactionRepository.AddAsync(new Transaction
-                {
-                    Amount = 15.00m,
-                    Description = "Taxi to work",
-                    Date = DateTime.Now.AddDays(-2),
-                    Type = Core.Enums.TransactionType.Expense,
-                    CategoryId = transportCategory.Id,
-                    Currency = "GEL",
-                    CreatedAt = DateTime.Now
-                });
-
-                await _transactionRepository.AddAsync(new Transaction
-                {
-                    Amount = 85.30m,
-                    Description = "Restaurant dinner",
-                    Date = DateTime.Now.AddDays(-1),
-                    Type = Core.Enums.TransactionType.Expense,
-                    CategoryId = foodCategory.Id,
-                    Currency = "GEL",
-                    CreatedAt = DateTime.Now
-                });
-
-                await _transactionRepository.AddAsync(new Transaction
-                {
-                    Amount = 500m,
-                    Description = "Freelance project",
-                    Date = DateTime.Now,
-                    Type = Core.Enums.TransactionType.Income,
-                    CategoryId = salaryCategory.Id,
-                    Currency = "GEL",
-                    CreatedAt = DateTime.Now
-                });
-
-                MessageBox.Show("Test data added successfully!", "Success",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 LoadTransactions();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -356,6 +260,44 @@ namespace PFM.UI
                     MessageBox.Show($"Error deleting transaction: {ex.Message}",
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private async void btnEdit_Click(object sender, EventArgs e)
+        {
+            if (dgvTransactions.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a transaction to edit.",
+                    "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                var selectedRow = dgvTransactions.SelectedRows[0];
+                var transactionId = (int)selectedRow.Cells["Id"].Value;
+
+                var transaction = await _transactionRepository.GetByIdAsync(transactionId);
+
+                if (transaction != null)
+                {
+                    transaction.Category = await _categoryRepository.GetByIdAsync(transaction.CategoryId);
+
+                    var editForm = new AddEditTransactionForm(
+                        _transactionRepository,
+                        _categoryRepository,
+                        transaction);
+
+                    if (editForm.ShowDialog() == DialogResult.OK)
+                    {
+                        LoadTransactions();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error editing transaction: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

@@ -150,6 +150,7 @@
             btnEdit.Size = new Size(264, 58);
             btnEdit.TabIndex = 0;
             btnEdit.Text = "Edit";
+            btnEdit.Click += btnEdit_Click;
             // 
             // dgvTransactions
             // 
