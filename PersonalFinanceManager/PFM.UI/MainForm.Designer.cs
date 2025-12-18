@@ -66,11 +66,23 @@
             btnRefresh = new Guna.UI2.WinForms.Guna2Button();
             btnAddTransaction = new Guna.UI2.WinForms.Guna2Button();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
+            menuMain = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
+            transactionsToolStripMenuItem = new ToolStripMenuItem();
+            addTransactionToolStripMenuItem = new ToolStripMenuItem();
+            viewAllToolStripMenuItem = new ToolStripMenuItem();
+            categoriesToolStripMenuItem = new ToolStripMenuItem();
+            manageCategoriesToolStripMenuItem = new ToolStripMenuItem();
+            reportsToolStripMenuItem = new ToolStripMenuItem();
+            monthlyReportToolStripMenuItem = new ToolStripMenuItem();
+            categoryAnalysisToolStripMenuItem = new ToolStripMenuItem();
             panelMain.SuspendLayout();
             panelBottom.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTransactions).BeginInit();
             panelMid.SuspendLayout();
             filterPanel.SuspendLayout();
+            menuMain.SuspendLayout();
             SuspendLayout();
             // 
             // panelMain
@@ -80,6 +92,7 @@
             panelMain.Controls.Add(dgvTransactions);
             panelMain.Controls.Add(panelMid);
             panelMain.Controls.Add(filterPanel);
+            panelMain.Controls.Add(menuMain);
             panelMain.Dock = DockStyle.Fill;
             panelMain.Location = new Point(0, 0);
             panelMain.Name = "panelMain";
@@ -175,11 +188,11 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvTransactions.DefaultCellStyle = dataGridViewCellStyle3;
             dgvTransactions.GridColor = Color.FromArgb(231, 229, 255);
-            dgvTransactions.Location = new Point(24, 249);
+            dgvTransactions.Location = new Point(24, 272);
             dgvTransactions.Name = "dgvTransactions";
             dgvTransactions.RowHeadersVisible = false;
             dgvTransactions.RowHeadersWidth = 62;
-            dgvTransactions.Size = new Size(1802, 570);
+            dgvTransactions.Size = new Size(1802, 547);
             dgvTransactions.TabIndex = 2;
             dgvTransactions.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvTransactions.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -210,7 +223,7 @@
             panelMid.Controls.Add(lblBalance);
             panelMid.Controls.Add(lblTotalExpenses);
             panelMid.Controls.Add(lblTotalIncome);
-            panelMid.Location = new Point(24, 156);
+            panelMid.Location = new Point(24, 182);
             panelMid.Name = "panelMid";
             panelMid.Size = new Size(1802, 71);
             panelMid.TabIndex = 1;
@@ -250,6 +263,7 @@
             // 
             // filterPanel
             // 
+            filterPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             filterPanel.BorderStyle = BorderStyle.FixedSingle;
             filterPanel.Controls.Add(cmbType);
             filterPanel.Controls.Add(dtpToDate);
@@ -257,7 +271,7 @@
             filterPanel.Controls.Add(btnRefresh);
             filterPanel.Controls.Add(btnAddTransaction);
             filterPanel.Controls.Add(txtSearch);
-            filterPanel.Location = new Point(24, 21);
+            filterPanel.Location = new Point(24, 45);
             filterPanel.Name = "filterPanel";
             filterPanel.Size = new Size(1802, 114);
             filterPanel.TabIndex = 0;
@@ -377,21 +391,103 @@
             txtSearch.TabIndex = 0;
             txtSearch.TextChanged += txtSearch_TextChanged;
             // 
+            // menuMain
+            // 
+            menuMain.ImageScalingSize = new Size(24, 24);
+            menuMain.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, transactionsToolStripMenuItem, categoriesToolStripMenuItem, reportsToolStripMenuItem });
+            menuMain.Location = new Point(0, 0);
+            menuMain.Name = "menuMain";
+            menuMain.Size = new Size(1851, 33);
+            menuMain.TabIndex = 4;
+            menuMain.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(54, 29);
+            fileToolStripMenuItem.Text = "File";
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(141, 34);
+            exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
+            // 
+            // transactionsToolStripMenuItem
+            // 
+            transactionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { addTransactionToolStripMenuItem, viewAllToolStripMenuItem });
+            transactionsToolStripMenuItem.Name = "transactionsToolStripMenuItem";
+            transactionsToolStripMenuItem.Size = new Size(124, 29);
+            transactionsToolStripMenuItem.Text = "Transactions";
+            // 
+            // addTransactionToolStripMenuItem
+            // 
+            addTransactionToolStripMenuItem.Name = "addTransactionToolStripMenuItem";
+            addTransactionToolStripMenuItem.Size = new Size(270, 34);
+            addTransactionToolStripMenuItem.Text = "Add Transaction";
+            addTransactionToolStripMenuItem.Click += addTransactionToolStripMenuItem_Click;
+            // 
+            // viewAllToolStripMenuItem
+            // 
+            viewAllToolStripMenuItem.Name = "viewAllToolStripMenuItem";
+            viewAllToolStripMenuItem.Size = new Size(270, 34);
+            viewAllToolStripMenuItem.Text = "View All";
+            viewAllToolStripMenuItem.Click += viewAllToolStripMenuItem_Click;
+            // 
+            // categoriesToolStripMenuItem
+            // 
+            categoriesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { manageCategoriesToolStripMenuItem });
+            categoriesToolStripMenuItem.Name = "categoriesToolStripMenuItem";
+            categoriesToolStripMenuItem.Size = new Size(112, 29);
+            categoriesToolStripMenuItem.Text = "Categories";
+            // 
+            // manageCategoriesToolStripMenuItem
+            // 
+            manageCategoriesToolStripMenuItem.Name = "manageCategoriesToolStripMenuItem";
+            manageCategoriesToolStripMenuItem.Size = new Size(270, 34);
+            manageCategoriesToolStripMenuItem.Text = "Manage Categories";
+            manageCategoriesToolStripMenuItem.Click += manageCategoriesToolStripMenuItem_Click;
+            // 
+            // reportsToolStripMenuItem
+            // 
+            reportsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { monthlyReportToolStripMenuItem, categoryAnalysisToolStripMenuItem });
+            reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
+            reportsToolStripMenuItem.Size = new Size(89, 29);
+            reportsToolStripMenuItem.Text = "Reports";
+            // 
+            // monthlyReportToolStripMenuItem
+            // 
+            monthlyReportToolStripMenuItem.Name = "monthlyReportToolStripMenuItem";
+            monthlyReportToolStripMenuItem.Size = new Size(255, 34);
+            monthlyReportToolStripMenuItem.Text = "Monthly Report";
+            // 
+            // categoryAnalysisToolStripMenuItem
+            // 
+            categoryAnalysisToolStripMenuItem.Name = "categoryAnalysisToolStripMenuItem";
+            categoryAnalysisToolStripMenuItem.Size = new Size(255, 34);
+            categoryAnalysisToolStripMenuItem.Text = "Category Analysis";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1851, 948);
             Controls.Add(panelMain);
+            MainMenuStrip = menuMain;
             MinimumSize = new Size(1000, 600);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Personal Finance Manager";
             panelMain.ResumeLayout(false);
+            panelMain.PerformLayout();
             panelBottom.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvTransactions).EndInit();
             panelMid.ResumeLayout(false);
             filterPanel.ResumeLayout(false);
+            menuMain.ResumeLayout(false);
+            menuMain.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -414,5 +510,16 @@
         private Guna.UI2.WinForms.Guna2Button btnDelete;
         private Guna.UI2.WinForms.Guna2Button btnEdit;
         private Guna.UI2.WinForms.Guna2ComboBox cmbType;
+        private MenuStrip menuMain;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem transactionsToolStripMenuItem;
+        private ToolStripMenuItem addTransactionToolStripMenuItem;
+        private ToolStripMenuItem viewAllToolStripMenuItem;
+        private ToolStripMenuItem categoriesToolStripMenuItem;
+        private ToolStripMenuItem manageCategoriesToolStripMenuItem;
+        private ToolStripMenuItem reportsToolStripMenuItem;
+        private ToolStripMenuItem monthlyReportToolStripMenuItem;
+        private ToolStripMenuItem categoryAnalysisToolStripMenuItem;
     }
 }

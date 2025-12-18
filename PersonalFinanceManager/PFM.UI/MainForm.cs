@@ -1,5 +1,6 @@
 ﻿using PFM.Core.Entities;
 using PFM.Core.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PFM.UI
 {
@@ -299,6 +300,29 @@ namespace PFM.UI
                 MessageBox.Show($"Error editing transaction: {ex.Message}",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void addTransactionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnAddTransaction.PerformClick();
+        }
+
+        private void viewAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnRefresh.PerformClick();
+        }
+
+        private async void manageCategoriesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var categoriesForm = new CategoriesForm(_categoryRepository);
+            categoriesForm.ShowDialog();
+
+            LoadTransactions();
         }
     }
 }
