@@ -27,6 +27,18 @@ namespace PFM.Infrastructure.Repositories
             return await _dbSet.ToListAsync();
         }
 
+        public async Task<IEnumerable<T>> GetAllWithIncludesAsync()
+        {
+            if (typeof(T) == typeof(Transaction))
+            {
+                return (IEnumerable<T>)await _context.Set<Transaction>()
+                    .Include(t => t.Category)
+                    .ToListAsync();
+            }
+
+            return await _dbSet.ToListAsync();
+        }
+
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();

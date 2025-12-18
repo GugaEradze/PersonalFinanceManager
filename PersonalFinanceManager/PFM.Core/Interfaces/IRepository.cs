@@ -7,6 +7,7 @@ namespace PFM.Core.Interfaces
     {
         Task<T?> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllWithIncludesAsync();
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task<T> AddAsync(T entity);
         Task UpdateAsync(T entity);

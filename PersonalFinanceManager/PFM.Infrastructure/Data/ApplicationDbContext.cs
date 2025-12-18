@@ -17,7 +17,6 @@ namespace PFM.Infrastructure.Data
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Category> Categories { get; set; }
 
-        // ეს მეთოდი დაამატე
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -35,7 +34,6 @@ namespace PFM.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Transaction Configuration
             modelBuilder.Entity<Transaction>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -49,7 +47,6 @@ namespace PFM.Infrastructure.Data
                       .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // Category Configuration
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.Id);
