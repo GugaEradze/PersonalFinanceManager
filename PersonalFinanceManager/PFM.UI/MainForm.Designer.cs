@@ -126,6 +126,7 @@
             btnExport.Size = new Size(264, 58);
             btnExport.TabIndex = 2;
             btnExport.Text = "Export To Excel";
+            btnExport.Click += btnExport_Click;
             // 
             // btnDelete
             // 
@@ -425,14 +426,14 @@
             // addTransactionToolStripMenuItem
             // 
             addTransactionToolStripMenuItem.Name = "addTransactionToolStripMenuItem";
-            addTransactionToolStripMenuItem.Size = new Size(270, 34);
+            addTransactionToolStripMenuItem.Size = new Size(241, 34);
             addTransactionToolStripMenuItem.Text = "Add Transaction";
             addTransactionToolStripMenuItem.Click += addTransactionToolStripMenuItem_Click;
             // 
             // viewAllToolStripMenuItem
             // 
             viewAllToolStripMenuItem.Name = "viewAllToolStripMenuItem";
-            viewAllToolStripMenuItem.Size = new Size(270, 34);
+            viewAllToolStripMenuItem.Size = new Size(241, 34);
             viewAllToolStripMenuItem.Text = "View All";
             viewAllToolStripMenuItem.Click += viewAllToolStripMenuItem_Click;
             // 
@@ -446,7 +447,7 @@
             // manageCategoriesToolStripMenuItem
             // 
             manageCategoriesToolStripMenuItem.Name = "manageCategoriesToolStripMenuItem";
-            manageCategoriesToolStripMenuItem.Size = new Size(270, 34);
+            manageCategoriesToolStripMenuItem.Size = new Size(267, 34);
             manageCategoriesToolStripMenuItem.Text = "Manage Categories";
             manageCategoriesToolStripMenuItem.Click += manageCategoriesToolStripMenuItem_Click;
             // 

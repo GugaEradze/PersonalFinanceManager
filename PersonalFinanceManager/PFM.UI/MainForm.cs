@@ -1,6 +1,7 @@
 ﻿using PFM.Core.Entities;
 using PFM.Core.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace PFM.UI
 {
@@ -323,6 +324,130 @@ namespace PFM.UI
             categoriesForm.ShowDialog();
 
             LoadTransactions();
+        }
+
+        private async void btnExport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var transactions = await _transactionRepository.GetAllWithIncludesAsync();
+                var transactionsList = transactions.OrderByDescending(t => t.Date).ToList();
+
+                if (!transactionsList.Any())
+                {
+                    MessageBox.Show("No transactions to export.", "Info",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                using (var saveFileDialog = new SaveFileDialog())
+                {
+                    saveFileDialog.Filter = "Excel Files|*.xlsx";
+                    saveFileDialog.Title = "Export Transactions to Excel";
+                    saveFileDialog.FileName = $"Transactions_{DateTime.Now:yyyy-MM-dd}.xlsx";
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                        using (var package = new ExcelPackage())
+                        {
+                            var worksheet = package.Workbook.Worksheets.Add("Transactions");
+
+                            worksheet.Cells[1, 1].Value = "Date";
+                            worksheet.Cells[1, 2].Value = "Description";
+                            worksheet.Cells[1, 3].Value = "Category";
+                            worksheet.Cells[1, 4].Value = "Type";
+                            worksheet.Cells[1, 5].Value = "Amount";
+                            worksheet.Cells[1, 6].Value = "Currency";
+
+                            using (var range = worksheet.Cells[1, 1, 1, 6])
+                            {
+                                range.Style.Font.Bold = true;
+                                range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+                                range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            }
+
+                            int row = 2;
+                            foreach (var transaction in transactionsList)
+                            {
+                                worksheet.Cells[row, 1].Value = transaction.Date.ToString("dd/MM/yyyy");
+                                worksheet.Cells[row, 2].Value = transaction.Description;
+                                worksheet.Cells[row, 3].Value = transaction.Category?.Name ?? "N/A";
+                                worksheet.Cells[row, 4].Value = transaction.Type.ToString();
+                                worksheet.Cells[row, 5].Value = transaction.Amount;
+                                worksheet.Cells[row, 6].Value = transaction.Currency;
+
+                                if (transaction.Type == Core.Enums.TransactionType.Income)
+                                {
+                                    worksheet.Cells[row, 5].Style.Font.Color.SetColor(System.Drawing.Color.Green);
+                                }
+                                else
+                                {
+                                    worksheet.Cells[row, 5].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                                }
+
+                                row++;
+                            }
+
+                            row += 2;
+                            var totalIncome = transactionsList
+                                .Where(t => t.Type == Core.Enums.TransactionType.Income)
+                                .Sum(t => t.Amount);
+
+                            var totalExpenses = transactionsList
+                                .Where(t => t.Type == Core.Enums.TransactionType.Expense)
+                                .Sum(t => t.Amount);
+
+                            var balance = totalIncome - totalExpenses;
+
+                            worksheet.Cells[row, 1].Value = "Total Income:";
+                            worksheet.Cells[row, 2].Value = totalIncome;
+                            worksheet.Cells[row, 2].Style.Font.Color.SetColor(System.Drawing.Color.Green);
+                            worksheet.Cells[row, 2].Style.Font.Bold = true;
+
+                            row++;
+                            worksheet.Cells[row, 1].Value = "Total Expenses:";
+                            worksheet.Cells[row, 2].Value = totalExpenses;
+                            worksheet.Cells[row, 2].Style.Font.Color.SetColor(System.Drawing.Color.Red);
+                            worksheet.Cells[row, 2].Style.Font.Bold = true;
+
+                            row++;
+                            worksheet.Cells[row, 1].Value = "Balance:";
+                            worksheet.Cells[row, 2].Value = balance;
+                            worksheet.Cells[row, 2].Style.Font.Bold = true;
+                            worksheet.Cells[row, 2].Style.Font.Color.SetColor(
+                                balance >= 0 ? System.Drawing.Color.Green : System.Drawing.Color.Red);
+
+                            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                            FileInfo fileInfo = new FileInfo(saveFileDialog.FileName);
+                            package.SaveAs(fileInfo);
+                        }
+
+                        MessageBox.Show($"Transactions exported successfully to:\n{saveFileDialog.FileName}",
+                            "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        var result = MessageBox.Show("Do you want to open the file now?",
+                            "Open File", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                            {
+                                FileName = saveFileDialog.FileName,
+                                UseShellExecute = true
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting to Excel: {ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
