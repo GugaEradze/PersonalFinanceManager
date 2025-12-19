@@ -449,5 +449,11 @@ namespace PFM.UI
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void monthlyReportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var reportForm = new MonthlyReportForm(_transactionRepository);
+            reportForm.ShowDialog();
+        }
     }
 }

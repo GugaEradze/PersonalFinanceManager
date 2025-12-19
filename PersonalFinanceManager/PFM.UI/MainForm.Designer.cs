@@ -461,13 +461,14 @@
             // monthlyReportToolStripMenuItem
             // 
             monthlyReportToolStripMenuItem.Name = "monthlyReportToolStripMenuItem";
-            monthlyReportToolStripMenuItem.Size = new Size(255, 34);
+            monthlyReportToolStripMenuItem.Size = new Size(270, 34);
             monthlyReportToolStripMenuItem.Text = "Monthly Report";
+            monthlyReportToolStripMenuItem.Click += monthlyReportToolStripMenuItem_Click;
             // 
             // categoryAnalysisToolStripMenuItem
             // 
             categoryAnalysisToolStripMenuItem.Name = "categoryAnalysisToolStripMenuItem";
-            categoryAnalysisToolStripMenuItem.Size = new Size(255, 34);
+            categoryAnalysisToolStripMenuItem.Size = new Size(270, 34);
             categoryAnalysisToolStripMenuItem.Text = "Category Analysis";
             // 
             // MainForm

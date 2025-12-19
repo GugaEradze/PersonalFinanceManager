@@ -40,6 +40,7 @@ namespace PFM.UI
             services.AddTransient<MainForm>();
             services.AddTransient<AddEditTransactionForm>();
             services.AddTransient<CategoriesForm>();
+            services.AddTransient<MonthlyReportForm>();
         }
     }
 }
